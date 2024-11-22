@@ -3,7 +3,7 @@ package holos
 Fleets: {
   "cloud_controller": {
     parameters: {
-      name: "cloud_controller"
+      name: "cloud-controller"
     }
     clusters: {
       "hetzner": {
