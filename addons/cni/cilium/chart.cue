@@ -1,22 +1,26 @@
 package holos
+import ("encoding/json")
 
-// === Register Addon ===
 
-_Addons: {
-  "cilium": {
-    Path: "addons/cni/cilium/chart.cue"
-    Selector: {
-      "cluster.cni": "cilium"
-    }
-  }
+// === Parameters ===
+
+_params_json: string | *"" @tag(holos_params, type=string)
+_params: {}
+if _params_json != "" {
+	_params: json.Unmarshal(_params_json)
 }
+
+params: {}
+for k, v in _params {
+	params: (k): v
+}
+
 
 // === Build Plan ===
 
 holos: Helm.BuildPlan
 
 Helm: #Helm & {
-  Name:      "cilium"
   Namespace: "kube-system"
 
   Chart: {
@@ -32,22 +36,14 @@ Helm: #Helm & {
     installCRDs: true
     kubeProxyReplacement: true
     operator: replicas: 1
-    cluster: name: tags.name
+    cluster: name: params.fleet.name + params.cluster.name
     ipam: mode: "kubernetes"
   }
 }
 
-// === Tags / Parameters ===
-
-let tags = {
-  os: string @tag(cluster_os, type=string)
-  name: string @tag(cluster_name, type=string)
-  meshed: bool @tag(fleet_meshed, type=bool)
-}
-
 // === Talos ===
 
-if tags.os == "talos" {
+if params.cluster.os == "talos" {
   Helm: Values: {
     k8sServiceHost: "localhost"
     k8sServicePort: 7445
@@ -77,11 +73,12 @@ if tags.os == "talos" {
       hostRoot: "/sys/fs/cgroup"
       autoMount: enabled: false
     }
+  }
 }
 
 // === Meshed ===
 
-if tags.meshed {
+if params.fleet.meshed {
   Helm: Values: {
     cni: exclusive: false
     socketLB: hostNamespaceOnly: true

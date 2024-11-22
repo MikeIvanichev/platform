@@ -35,6 +35,8 @@ import (
 // https://holos.run/docs/next/api/author/#Kubernetes
 #Kubernetes: {
 	Name:            _
+	Labels:          _
+	Annotations:     _
 	Path:            _
 	Parameters:      _
 	Resources:       _
@@ -84,18 +86,21 @@ import (
 
 	BuildPlan: {
 		metadata: name: Name
-		spec: artifacts: [for x in Artifacts {x}]
-		source: component: {
-			name:       Name
-			path:       Path
-			parameters: Parameters
+		if len(Labels) != 0 {
+			metadata: labels: Labels
 		}
+		if len(Annotations) != 0 {
+			metadata: annotations: Annotations
+		}
+		spec: artifacts: [for x in Artifacts {x}]
 	}
 }
 
 // https://holos.run/docs/next/api/author/#Helm
 #Helm: {
 	Name:            _
+	Labels:          _
+	Annotations:     _
 	Path:            _
 	Parameters:      _
 	Resources:       _
@@ -106,9 +111,11 @@ import (
 		name:    string | *Name
 		release: string | *name
 	}
-	Values:      _
-	EnableHooks: _
-	Namespace?:  _
+	Values:       _
+	EnableHooks:  _
+	Namespace?:   _
+	APIVersions?: _
+	KubeVersion?: _
 
 	Artifacts: {
 		HolosComponent: {
@@ -133,6 +140,12 @@ import (
 						enableHooks: EnableHooks
 						if Namespace != _|_ {
 							namespace: Namespace
+						}
+						if APIVersions != _|_ {
+							apiVersions: APIVersions
+						}
+						if KubeVersion != _|_ {
+							kubeVersion: KubeVersion
 						}
 					}
 				},
@@ -167,11 +180,12 @@ import (
 
 	BuildPlan: {
 		metadata: name: Name
-		spec: artifacts: [for x in Artifacts {x}]
-		source: component: {
-			name:       Name
-			path:       Path
-			parameters: Parameters
+		if len(Labels) != 0 {
+			metadata: labels: Labels
 		}
+		if len(Annotations) != 0 {
+			metadata: annotations: Annotations
+		}
+		spec: artifacts: [for x in Artifacts {x}]
 	}
 }

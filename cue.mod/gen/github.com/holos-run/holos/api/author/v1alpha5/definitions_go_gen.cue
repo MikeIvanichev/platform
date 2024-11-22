@@ -49,6 +49,12 @@ import "github.com/holos-run/holos/api/core/v1alpha5:core"
 	// fully rendered manifest file path.
 	Name: string
 
+	// Labels represent the BuildPlan metadata.labels field.
+	Labels: {[string]: string} @go(,map[string]string)
+
+	// Annotations represent the BuildPlan metadata.annotations field.
+	Annotations: {[string]: string} @go(,map[string]string)
+
 	// Path represents the path to the component producing the BuildPlan.
 	Path: string
 
@@ -91,6 +97,12 @@ import "github.com/holos-run/holos/api/core/v1alpha5:core"
 
 	// Namespace sets the helm chart namespace flag if provided.
 	Namespace?: string
+
+	// APIVersions represents the helm template --api-versions flag
+	APIVersions?: [...string] @go(,[]string)
+
+	// KubeVersion represents the helm template --kube-version flag
+	KubeVersion?: string
 
 	// BuildPlan represents the derived BuildPlan produced for the holos render
 	// component command.
