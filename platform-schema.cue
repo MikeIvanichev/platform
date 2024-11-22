@@ -23,9 +23,11 @@ Fleets: [string]: #Fleet
 
 #Addon: close({
   path: string
+  schema: [string]: _
   selector?: [string]: string
   parameters: #Parameters
 })
+
 
 Addons: [string]: #Addon
 

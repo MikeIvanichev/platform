@@ -5,6 +5,9 @@ import ("encoding/json")
 Addons: {
   "cilium": {
     path: "addons/cni/cilium"
+    schema: {
+      addonParam: string
+    }
     parameters: {
       addonParam: "test"
     }
@@ -19,7 +22,7 @@ Addons: {
 for fleetName, fleet in Fleets {
   for clusterName, cluster in fleet.clusters{
     for addonName, addon in Addons {
-      let _params = {
+      _params: addon.schema & {
         "fleet": fleet.parameters
         "cluster": cluster.parameters
       } & addon.parameters
