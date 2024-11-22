@@ -6,6 +6,9 @@ Addons: {
   "cilium": {
     path: "addons/cni/cilium"
     schema: {
+      fleet: {
+        name: string
+      }
       addonParam: string
     }
     parameters: {
