@@ -18,6 +18,12 @@ Addons: {
       "cluster_cni": "cilium"
     }
   }
+  "cert-manager": {
+    path: "addons/cert-manager"
+    parameters: {
+      enableCRDs: true
+    }
+  }
 }
 
 // === Render ===
@@ -25,7 +31,7 @@ Addons: {
 for fleetName, fleet in Fleets {
   for clusterName, cluster in fleet.clusters{
     for addonName, addon in Addons {
-      _params: addon.schema & {
+      let _params = addon.schema & {
         "fleet": fleet.parameters
         "cluster": cluster.parameters
       } & addon.parameters
