@@ -5,7 +5,7 @@ import ("encoding/json")
 // === Parameters ===
 
 // Validate params against the schema definition "interface"
-params: #CiliumParameters
+params: _CiliumParameters
 
 _params_json: string | *"" @tag(holos_params, type=string)
 if _params_json != "" {
