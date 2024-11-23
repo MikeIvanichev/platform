@@ -3,10 +3,7 @@ package holos
 import ("encoding/json")
 
 // === Parameters ===
-
-// Validate params against the schema definition "interface"
-params: _CiliumParameters
-
+params: {}
 _params_json: string | *"" @tag(holos_params, type=string)
 if _params_json != "" {
 	params: json.Unmarshal(_params_json)

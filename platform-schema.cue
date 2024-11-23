@@ -3,7 +3,7 @@ package holos
 #Cluster: close({
 	// Passed to each component that is intended for this cluster as "cluster.\(param):\(val)"
 	parameters: #Parameters & {
-		name:        string | *"no-name"
+		name:        string
 		data_region: "eu" | "usa" | "apac"
 		host:        "hetzner" | "aws"
 		os:          "talos"
@@ -12,7 +12,7 @@ package holos
 })
 
 #Fleet: close({
-	clusters: [string]: #Cluster
+	clusters: [clusterName=string]: #Cluster & {parameters: name: clusterName}
 	// Maps to Core.Component.WriteTo for all components in this deployment
 	componentWriteTo?: string
 	parameters: #Parameters & {
@@ -25,7 +25,6 @@ Fleets: [string]: #Fleet
 #Addon: close({
 	path: string
 	selector?: [string]: string
-	parameters: #Parameters
 })
 
 Addons: [string]: #Addon

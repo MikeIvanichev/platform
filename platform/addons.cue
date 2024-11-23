@@ -6,12 +6,14 @@ import ("encoding/json")
 // hidden because parameters is not concrete.
 _Addons: {
 	"cilium": {
-		path:       "addons/cni/cilium"
-		parameters: _CiliumParameters
+		path: "addons/cni/cilium"
 		selector: {
 			"cluster_cni": "cilium"
 		}
 	}
+  "cert-manager": {
+    path: "addons/cert-manager"
+  }
 }
 
 // === Render ===
@@ -25,7 +27,7 @@ for fleetName, fleet in Fleets {
         let params = {
           fleet: FLEET.parameters
           cluster: CLUSTER.parameters
-        } & addon.parameters 
+        }
 
 				"\(fleetName).\(clusterName).addons.\(addonName)": {
 					name:     "\(fleetName).\(clusterName).addons.\(addonName)"

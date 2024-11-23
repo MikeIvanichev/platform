@@ -12,7 +12,6 @@ Fleets: {
           host: "hetzner"
           os: "talos"
           cni: "cilium"
-          name: "hetzner"
         }
       }
     }

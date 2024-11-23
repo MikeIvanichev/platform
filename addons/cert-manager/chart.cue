@@ -34,6 +34,6 @@ Helm: #Helm & {
   }
 
   Values: {
-    crds: enabled: params.enableCRDs
+    crds: enabled: true
   }
 }
