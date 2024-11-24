@@ -113,6 +113,11 @@ Helm: Values: {
   
   cainjector: {
   	replicaCount: int | *1
+
+	  extraArgs: [
+	  	"--namespace=cert-manager",
+	  	"--enable-certificates-data-source=false",
+	  ]
   	
   	podDisruptionBudget: {
   		enabled: true

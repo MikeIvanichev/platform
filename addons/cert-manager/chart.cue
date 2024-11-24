@@ -23,7 +23,7 @@ Helm: #Helm & {
 
 // === Enable HA Mode ===
 
-if params.heighlyAvailable {
+if params.highlyAvailable {
   Helm: Values: {
     replicaCount: 2
     webhook: replicaCount: 3

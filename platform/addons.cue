@@ -22,9 +22,27 @@ Addons: {
     path: "addons/cert-manager"
     _fleetParameters: _
     parameters: #CertManagerParameters & {
-      heighlyAvailable: _fleetParameters.prod
+      highlyAvailable: _fleetParameters.prod
     }
   }
+
+  "argocd": {
+    path: "addons/argocd"
+    parameters: #ArgoCDParameters
+  }
+
+  "metrics-server": {
+    path: "addons/metrics-server"
+    _fleetParameters: _
+    parameters: #MetricsServerParameters & {
+      highlyAvailable: _fleetParameters.prod
+    }
+  }
+
+  //"kubelet-serving-cert-approver": {
+  //  path: "addons/kubelet-serving-cert-approver"
+  //  parameters: #KubletServingCertApproverParameters
+  //}
 }
 
 // === Render ===

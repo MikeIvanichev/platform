@@ -7,7 +7,13 @@ package holos
 }
 
 #CertManagerParameters: {
-  heighlyAvailable: bool | *false
+  highlyAvailable: bool | *false
 }
 
+#ArgoCDParameters: {}
 
+#MetricsServerParameters: {
+  highlyAvailable: bool | *false
+}
+
+#KubletServingCertApproverParameters: {}

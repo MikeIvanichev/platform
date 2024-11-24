@@ -16,7 +16,7 @@ Fleets: {
 
   "hetzner_workers": {
     parameters: {
-     prod: true
+      prod: true
     }
     clusters: {
       "fn-1": {
