@@ -1,10 +1,14 @@
 package holos
 
-import "github.com/holos-run/holos/api/author/v1alpha5:author"
+import ("github.com/holos-run/holos/api/author/v1alpha5:author")
+
+params: #Parameters & _Tags.params
+
 
 #ComponentConfig: author.#ComponentConfig & {
 	Name:      _Tags.component.name
 	Path:      _Tags.component.path
+  OutputBaseDir: _Tags.outputBaseDir
 	Resources: #Resources
 
 	// labels is an optional field, guard references to it.

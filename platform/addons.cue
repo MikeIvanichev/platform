@@ -3,39 +3,52 @@ package holos
 import ("encoding/json")
 
 
-// hidden because parameters is not concrete.
-_Addons: {
+Addons: {
 	"cilium": {
 		path: "addons/cni/cilium"
 		selector: {
-			"cluster_cni": "cilium"
+			"cni": "cilium"
 		}
+    _clusterParameters: _
+    _fleetParameters: _
+    parameters: #CiliumParameters & {
+      clusterName: _clusterParameters.name
+      os: _clusterParameters.os
+      meshed: _fleetParameters.meshed
+    }
 	}
+
   "cert-manager": {
     path: "addons/cert-manager"
+    _fleetParameters: _
+    parameters: #CertManagerParameters & {
+      heighlyAvailable: _fleetParameters.prod
+    }
   }
 }
 
 // === Render ===
 
 for fleetName, fleet in Fleets {
-	for clusterName, cluster in fleet.clusters {
-		for addonName, addon in _Addons {
-			Platform: Components: {
-        let FLEET = fleet
-        let CLUSTER = cluster
-        let params = {
-          fleet: FLEET.parameters
-          cluster: CLUSTER.parameters
+  for clusterName, cluster in fleet.clusters {
+    for addonName, rawAddon in Addons {
+      let union = rawAddon.selector & cluster.parameters
+      if union != _|_ {
+        let addon = rawAddon & {
+            _fleetParameters: fleet.parameters
+            _clusterParameters: cluster.parameters
         }
-
-				"\(fleetName).\(clusterName).addons.\(addonName)": {
-					name:     "\(fleetName).\(clusterName).addons.\(addonName)"
-					path:     addon.path
-					writeTo?: fleet.componentWriteTo
-					parameters: holos_params: json.Marshal(params)
-				}
-			}
-		}
-	}
+			  Platform: Components: {
+			  	"\(fleetName).\(clusterName).addons.\(addonName)": {
+			  		name:     addonName
+			  		path:     addon.path
+			  		parameters: {
+              params: json.Marshal(addon.parameters)
+              output_base_dir: "\(fleetName)/\(clusterName)/addons"
+            }
+			  	}
+			  }
+      }
+    }
+  }
 }

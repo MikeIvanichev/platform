@@ -1,13 +1,8 @@
 package holos
 
-import ("encoding/json")
+// === Define Parameter Schema ===
 
-// === Parameters ===
-params: {}
-_params_json: string | *"" @tag(holos_params, type=string)
-if _params_json != "" {
-	params: json.Unmarshal(_params_json)
-}
+params: #CiliumParameters
 
 // === Build Plan ===
 
@@ -29,7 +24,7 @@ Helm: #Helm & {
 		installCRDs:          true
 		kubeProxyReplacement: true
 		operator: replicas: 1
-		cluster: name:      params.fleet.name + params.cluster.name
+		cluster: name:      params.clusterName
 		ipam: mode:         "kubernetes"
 	}
 }

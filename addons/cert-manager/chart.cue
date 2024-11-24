@@ -1,21 +1,8 @@
-
 package holos
-import ("encoding/json")
 
+// === Define Parameter Schema ===
 
-// === Parameters ===
-
-_params_json: string | *"" @tag(holos_params, type=string)
-_params: {}
-if _params_json != "" {
-	_params: json.Unmarshal(_params_json)
-}
-
-params: {}
-for k, v in _params {
-	params: (k): v
-}
-
+params: #CertManagerParameters
 
 // === Build Plan ===
 
@@ -32,8 +19,14 @@ Helm: #Helm & {
       url:  "https://charts.jetstack.io"
     }
   }
+}
 
-  Values: {
-    crds: enabled: true
+// === Enable HA Mode ===
+
+if params.heighlyAvailable {
+  Helm: Values: {
+    replicaCount: 2
+    webhook: replicaCount: 3
+    cainjector: replicaCount: 2
   }
 }

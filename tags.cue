@@ -31,4 +31,11 @@ _Tags: {
 			annotations: (k): v
 		}
 	}
+  
+  _params_json: string | *"" @tag(params, type=string)
+  if _params_json != "" {
+    params: json.Unmarshal(_params_json)
+  }
+
+  outputBaseDir: string | *"." @tag(output_base_dir, type=string)
 }
